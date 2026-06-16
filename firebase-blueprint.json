@@ -1,0 +1,56 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Patient profile data containing contact info and basic biometrics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "The firebase auth user UID" },
+        "name": { "type": "string", "description": "Full legal name" },
+        "email": { "type": "string", "description": "Email address" },
+        "phone": { "type": "string", "description": "Contact phone number" },
+        "age": { "type": "integer", "description": "Age of the patient" },
+        "bloodType": { "type": "string", "description": "Physiological blood group" },
+        "allergies": { "type": "array", "description": "Known drug and material allergies" },
+        "gender": { "type": "string", "description": "Biological sex gender representation" },
+        "emergencyContact": { "type": "object", "description": "Emergency representative details" },
+        "height": { "type": "number", "description": "Height in cm" },
+        "weight": { "type": "number", "description": "Weight in kg" }
+      },
+      "required": ["id", "name", "email"]
+    },
+    "Appointment": {
+      "title": "Patient Appointment",
+      "description": "Outpatient clinic booking details mapped to doctors and departments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique consultation confirmation ID" },
+        "userId": { "type": "string", "description": "Authenticated user owner UID who scheduled the appointment" },
+        "doctorId": { "type": "string", "description": "Specialist doctor identifier" },
+        "doctorName": { "type": "string", "description": "Consultant doctor legal name" },
+        "departmentId": { "type": "string", "description": "Clinical department code name" },
+        "departmentName": { "type": "string", "description": "Specialty department public name" },
+        "patientName": { "type": "string", "description": "Patient legal name for the booking record" },
+        "patientEmail": { "type": "string", "description": "Patient corresponding email address" },
+        "patientPhone": { "type": "string", "description": "Patient corresponding phone number" },
+        "patientType": { "type": "string", "enum": ["new", "returning"] },
+        "date": { "type": "string", "format": "date", "description": "Consultation date (YYYY-MM-DD)" },
+        "timeSlot": { "type": "string", "description": "Chosen scheduled time slot" },
+        "status": { "type": "string", "enum": ["scheduled", "completed", "cancelled"] },
+        "reason": { "type": "string", "description": "Specific symptoms or diagnostic target reason" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when this booking record was generated" }
+      },
+      "required": ["id", "userId", "doctorId", "doctorName", "departmentId", "departmentName", "patientName", "patientEmail", "patientPhone", "date", "timeSlot", "status", "reason", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User patient cards containing PII and basic biometrics"
+    },
+    "/appointments/{appointmentId}": {
+      "schema": "Appointment",
+      "description": "Clinic appointments scheduled by patients"
+    }
+  }
+}
